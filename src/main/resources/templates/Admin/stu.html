@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学生管理</title>
+    <link rel="stylesheet" href="/css/me.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/me.css">
+
+</head>
+<body style="width: auto;height: 100%">
+<div class="row fluid">
+    <div class="col-lg-2" style="height: 1000px; background-color: #F8F8FF;">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation"><h4><span>欢迎</span><span th:text="${session.user.sname}"></span><span>进入图书管理系统</span></h4></li>
+            <li role="presentation"><a href="/book">图书管理</a></li>
+            <li role="presentation"><a href="/toAddBook">图书添加</a></li>
+            <li role="presentation"><a href="/type">图书类别</a></li>
+            <li role="presentation"><a href="/publishing">出版社</a></li>
+            <li role="presentation"><a href="/borrow">借出</a></li>
+            <li role="presentation" class="active"><a href="/stu">用户</a></li>
+            <li role="presentation"><a href="/logout">退出</a> </li>
+        </ul>
+    </div>
+    <div class="container-fluid col-lg-10">
+        <h1 style="text-align: center">添加图书</h1>
+        <table class="table  table-hover table-condensed" style="table-layout:fixed;text-align: left" th:each="list:${stu.list}">
+            <tbody>
+            <tr>
+                <td th:text="${list.getId()}"></td>
+                <td th:text="${list.getSid()}"></td>
+                <td th:text="${list.getSname()}"></td>
+                <td th:text="${list.getSex().getSex()}"></td>
+                <td th:text="${#dates.format(list.getStime(),'yyyy-MM-dd')}"></td>
+                <td><a href="/toAdd"> <button>添加</button></a></td>
+                <td><a th:href="@{'/getStuById?id='+${list.getId()}}"><button>修改</button></a></td>
+                <td><a th:href="@{'/deleteStu?id='+${list.getId()}}"><button>删除</button></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="text-align: center">
+            <p>当前 <span th:text="${stu.pageNum}"></span> 页,总 <span th:text="${stu.pages}"></span> 页,共 <span th:text="${stu.total}"></span> 条记录</p>
+            <a th:href="@{/stu}">首页</a>
+            <a th:href="@{/stu(pageNum=${stu.hasPreviousPage}?${stu.prePage}:1)}">上一页</a>
+            <a th:href="@{/stu(pageNum=${stu.hasNextPage}?${stu.nextPage}:${stu.pages})}">下一页</a>
+            <a th:href="@{/stu(pageNum=${stu.pages})}">尾页</a>
+        </div>
+    </div>
+</div>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

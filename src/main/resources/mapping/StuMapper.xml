@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.qiin.library.bookmapper.StuMapper">
+    <resultMap id="Stu" type="top.qiin.library.bean.Student">
+        <result property="id" column="id"/>
+        <result property="sid" column="sid"/>
+        <result property="sname" column="sname"/>
+        <result property="stime" column="stime"/>
+        <result property="password" column="password"/>
+        <association property="sex" javaType="top.qiin.library.bean.Sex">
+            <id property="sexid" column="sexid"/>
+            <result property="sex" column="sex"/>
+        </association>
+    </resultMap>
+    <select id="getStu" resultMap="Stu">
+        SELECT id,sid,sname,sex.`sex`,stime FROM student,sex WHERE student.`sexid`=sex.`sexid`
+    </select>
+    <select id="getStuById" resultMap="Stu">
+        SELECT * from student where id = #{id}
+    </select>
+
+</mapper>

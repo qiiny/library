@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/me.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/me.css">
+
+</head>
+<body style="width: auto;height: 100%">
+<div class="row fluid">
+    <div class="col-lg-2" style="height: 1000px; background-color: #F8F8FF;">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation"><h4><span>欢迎</span><span th:text="${session.user.sname}"></span><span>进入图书管理系统</span></h4></li>
+            <li role="presentation" class="active"><a href="/userBook">图书借阅</a></li>
+            <li role="presentation" ><a href="/jie">还书</a></li>
+            <li role="presentation"><a href="/logout">退出</a></li>
+
+        </ul>
+    </div>
+    <div class="container-fluid col-lg-10">
+        <h1 style="text-align: center">欢迎进入图书管理</h1>
+
+        <form action="/sousuo">
+            <div style="text-align: center">
+                <select name="type">
+                </select>
+                <select name="publishing">
+                </select>
+                <input type="text" name="name" value=""><input type="submit" value="搜索">
+            </div>
+        </form>
+        <table class="table  table-hover table-condensed" style="table-layout:fixed;text-align: left">
+            <tbody>
+            <tr >
+                <td>编号</td>
+                <td>ISBN</td>
+                <td>书名</td>
+                <td>作者</td>
+                <td>出版社</td>
+                <td>类型</td>
+                <td>价格</td>
+                <td>总数</td>
+                <td>简介</td>
+                <td>封面</td>
+                <td>借出</td>
+            </tr>
+            <tr th:each="list:${pageInfo.list}">
+                <td th:text="${list.getId()}"></td>
+                <td th:text="${list.getIsbn()}"></td>
+                <td th:text="${list.getName()}"></td>
+                <td th:text="${list.getAuthor()}"></td>
+                <td th:text="${list.publishingName.getPublishingname()}"></td>
+                <td th:text="${list.booktype.getTypeName()}"></td>
+                <td th:text="${list.getMoney()}"></td>
+                <td th:text="${list.getSum()}"></td>
+                <td th:text="${list.getIntro()}"></td>
+                <td th:text="${list.getImages()}"></td>
+                <td th:text="${list.getJie()}"></td>
+                <td>
+                    <a th:href="@{'/borrowBook?id='+${list.getId()}+'&bname='+${list.getName()}}"><button>借书</button></a>
+            </tr>
+            </tbody>
+        </table>
+        <div style="text-align: center">
+            <p>当前 <span th:text="${pageInfo.pageNum}"></span> 页,总 <span th:text="${pageInfo.pages}"></span> 页,共 <span th:text="${pageInfo.total}"></span> 条记录</p>
+            <a th:href="@{/userBook}">首页</a>
+            <a th:href="@{/userBook(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a>
+            <a th:href="@{/userBook(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a>
+            <a th:href="@{/userBook(pageNum=${pageInfo.pages})}">尾页</a>
+        </div>
+    </div>
+</div>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //查找所有图书种类，并给select选择框赋值
+        findAllBookCategory();
+        findAllBookPublishing()
+
+    });
+    function findAllBookCategory() {
+        $.ajax({
+            async: false,
+            type: "post",
+            url: "/findAllBookType",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $("select[name='type']").empty();
+                $("select[name='type']").append('<option value="">——请选择——</option>');
+                for (var i = 0; i < data.length; i++) {
+                    var html = '<option value="' + data[i].type + '">';
+                    html += data[i].typeName + '</option>';
+                    $("select[name='type']").append(html);
+                }
+            },
+            error: function (data) {
+                alert(data.result);
+            }
+        });
+    };
+    function findAllBookPublishing() {
+        $.ajax({
+            async : false,
+            type : "post",
+            url : "/findAllBookPublishing",
+            dataType : "json",
+            success: function (data) {
+                console.log(data);
+                $("select[name='publishing']").empty();
+                $("select[name='publishing']").append('<option value="">——请选择——</option>');
+                for(var i=0;i<data.length;i++){
+                    var html ='<option value="'+data[i].publishing+'">';
+                    html +=data[i].publishingname + '</option>';
+                    $("select[name='publishing']").append(html);
+                }
+            },
+            error:function (data) {
+                alert(data.result);
+            }
+        });
+
+    }
+</script>
+</body>
+</html>

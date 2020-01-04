@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.qiin.library.bookmapper.BookMapper">
+    <resultMap id="Book" type="top.qiin.library.bean.Book">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="isbn" column="isbn"/>
+        <result property="author" column="author"/>
+        <result property="money" column="money"/>
+        <result property="sum" column="sum"/>
+        <result property="intro" column="intro"/>
+        <result property="images" column="images"/>
+        <result property="jie" column="jie"/>
+        <association property="publishingName" javaType="top.qiin.library.bean.Publishing">
+            <id property="publishing" column="publishing"/>
+            <result property="publishingname" column="publishingname"/>
+        </association>
+        <association property="booktype" javaType="top.qiin.library.bean.BookType">
+            <id property="type" column="type"/>
+            <result property="typeName" column="typeName"/>
+        </association>
+    </resultMap>
+    <select id="getBook" resultMap="Book">
+      select * from book a,publishing b,book_type c where a.publishing=b.publishing and a.type=c.type ORDER BY `id`
+    </select>
+    <select id="getBookById" resultMap="Book">
+        select * from book where id = #{id}
+    </select>
+    <select id="list" resultMap="Book">
+        select * from book a,publishing b,book_type c where a.publishing=b.publishing and a.type=c.type ORDER BY `id` limit #{param1}, #{param2}
+    </select>
+    <select id="getTotal" resultType="int">
+        SELECT COUNT(*) FROM book
+    </select>
+    <select id="souSuo" resultMap="Book">
+        select * from book a,publishing b,book_type c where a.publishing=b.publishing and a.type=c.type
+            <if test="type!=null">
+                and a.type=#{type}
+            </if>
+            <if test="publishing!=null">
+                and a.publishing=#{publishing}
+            </if>
+            <if test="name!=null and name !=''">
+                and a.name like '%${name}%'
+            </if>
+    </select>
+</mapper>

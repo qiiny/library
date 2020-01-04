@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加书本</title>
+    <link rel="stylesheet" href="/css/me.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/me.css">
+
+</head>
+<body style="width: auto;height: 100%">
+<div class="row fluid">
+    <div class="col-lg-2" style="height: 1000px; background-color: #F8F8FF;">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation"><h4><span>欢迎</span><span th:text="${session.user.sname}"></span><span>进入图书管理系统</span></h4></li>
+            <li role="presentation"><a href="/book">图书管理</a></li>
+            <li role="presentation" class="active"><a href="/toAddBook">图书添加</a></li>
+            <li role="presentation"><a href="/type">图书类别</a></li>
+            <li role="presentation"><a href="/publishing">出版社</a></li>
+            <li role="presentation"><a href="/borrow">借出</a></li>
+            <li role="presentation"><a href="/stu">用户</a></li>
+            <li role="presentation"><a href="/logout">退出</a> </li>
+        </ul>
+    </div>
+    <div class="container-fluid col-lg-10">
+        <h1 style="text-align: center">添加图书</h1>
+        <form action="/addBook">
+            <table>
+                <tr>
+                    <td>书名</td>
+                    <td><input type="text" name="name"></td>
+                </tr>
+                <tr>
+                    <td>isbn</td>
+                    <td><input type="text" name="isbn"></td>
+                </tr>
+                <tr>
+                    <td>作者</td>
+                    <td><input type="text" name="author"></td>
+                </tr>
+                <tr>
+                    <td>书本类型</td>
+                    <td><select name="type" >
+                        <option th:each="type:${BookType}" th:value="${type.getType()}" th:text="${type.getTypeName()}"></option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>出版社</td>
+                    <td>
+                        <select name="publishing">
+                            <option th:each="publishings:${publishing}" th:value="${publishings.getPublishing()}" th:text="${publishings.getPublishingname()}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>价格</td>
+                    <td><input type="text" name="money"></td>
+                </tr>
+                <tr>
+                    <td>总数</td>
+                    <td><input type="text" name="sum"></td>
+                </tr>
+                 <tr>
+                    <td>简介</td>
+                    <td><input type="text" name="intro"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    <input type="submit" value="提交" style="width:100%">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

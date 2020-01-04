@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>更新用户</title>
+    <link rel="stylesheet" href="/css/me.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/me.css">
+
+</head>
+<body style="width: auto;height: 100%">
+<div class="row fluid">
+    <div class="col-lg-2" style="height: 1000px; background-color: #F8F8FF;">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation"><h4><span>欢迎</span><span th:text="${session.user.sname}"></span><span>进入图书管理系统</span></h4></li>
+            <li role="presentation"><a href="/book">图书管理</a></li>
+            <li role="presentation"><a href="/toAddBook">图书添加</a></li>
+            <li role="presentation"><a href="/type">图书类别</a></li>
+            <li role="presentation"><a href="/publishing">出版社</a></li>
+            <li role="presentation"><a href="/borrow">借出</a></li>
+            <li role="presentation" class="active"><a href="/stu">用户</a></li>
+            <li role="presentation"><a href="/logout">退出</a> </li>
+        </ul>
+    </div>
+    <div class="container-fluid col-lg-10">
+        <h1 style="text-align: center">添加图书</h1>
+        <form action="/updateStu">
+            <table class="addTable">
+                <tr>
+                    <td>id</td>
+                    <td><input type="text" name="id" id="id" placeholder="请在这里输入sid" th:value="${stu.id}" readonly="readonly"></td>
+                </tr>
+                <tr>
+                    <td>sid</td>
+                    <td><input type="text" name="sid" id="sid" placeholder="请在这里输入sid" th:value="${stu.sid}"></td>
+                </tr><tr>
+                <td>学生名字</td>
+                <td><input type="text" name="sname" id="sname" placeholder="请在这里输入书名" th:value="${stu.sname}"></td>
+            </tr><tr>
+                <td>入学时间</td>
+                <td><input type="date" name="stime" id="stime" placeholder="请在这里输入开学入学时间" th:value="${#dates.format(stu.getStime(),'yyyy-MM-dd')}"></td>
+            </tr><tr>
+                <td>密码</td>
+                <td><input type="text" name="password" id="password" placeholder="请在这里输入密码" th:value="${stu.password}"></td>
+            </tr><tr>
+                <td>性别：</td>
+                <td><select name="sexid">
+                    <option th:each="sexs:${sex}" th:value="${sexs.sexid}" th:text="${sexs.sex}" th:field="${stu.sex.sexid}"></option>
+                </select> </td>
+            </tr>
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <button type="submit" class="btn btn-success">提 交</button>
+                    </td>
+
+                </tr>
+
+            </table>
+        </form>
+    </div>
+</div>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>
